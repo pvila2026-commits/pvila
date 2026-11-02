@@ -16,7 +16,7 @@ window.PVILA = {
 
   /* Google Apps Script Web App URL (see README → Step 2).
      Leave empty to run the site in DEMO mode (bookings saved in browser only). */
-  apiUrl: "",
+  apiUrl: "https://script.google.com/macros/s/AKfycbwTHSH_18_VMyPqO7sXmgAlU-p1e4lCMEvsG_YbbtJjg4cSe4so5Vj4MHQCK7ld-b3xZw/exec",
 
   /* PayU: "test" uses https://test.payu.in, "live" uses https://secure.payu.in
      Merchant KEY and SALT are stored ONLY in the backend (never here). */
