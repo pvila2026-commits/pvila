@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin Reports — Panchanan Villa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Jost:wght@300;400;500;600&family=Noto+Sans+Bengali:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="admin-body">
+<div class="page-top"><div class="wrap">
+  <a href="index.html" class="logo"><span class="logo-mark">ॐ</span><span class="logo-text"><span>Panchanan<b>.</b></span><small>VILLA</small></span></a>
+  <div class="adm-top-right">
+    <span class="adm-badge">Admin · Reports</span>
+    <button class="btn btn-white" id="logout" hidden>Log out</button>
+  </div>
+</div></div>
+
+<section class="admin-login" id="login">
+  <h2 style="font-size:26px">Owner Login</h2>
+  <p style="color:var(--ink-2);font-size:14px">Enter the admin key (backend Script Property <code>ADMIN_KEY</code>).</p>
+  <input type="password" id="key" placeholder="Admin key" autocomplete="current-password">
+  <button class="btn btn-dark btn-block" id="go">Open Reports</button>
+  <p class="form-err" id="lerr"></p>
+</section>
+
+<main class="admin" id="panel" hidden>
+  <div class="adm-filters">
+    <label>Stay from<input type="date" id="fFrom"></label>
+    <label>Stay to<input type="date" id="fTo"></label>
+    <label>Status<select id="fStatus"><option value="">All</option><option>PAID</option><option>PENDING</option><option>FAILED</option><option>CANCELLED</option></select></label>
+    <label>Space<select id="fSpace"><option value="">All spaces</option></select></label>
+    <label class="grow">Search<input type="search" id="fQ" placeholder="Name, phone, email, booking ID…"></label>
+    <div class="adm-quick">
+      <button class="btn btn-line" data-range="month">This month</button>
+      <button class="btn btn-line" data-range="next90">Next 90 days</button>
+      <button class="btn btn-line" data-range="year">This year</button>
+      <button class="btn btn-line" data-range="all">All</button>
+    </div>
+  </div>
+
+  <div class="kpis kpis6" id="kpis"></div>
+
+  <nav class="adm-tabs" id="tabs" role="tablist"></nav>
+
+  <div class="adm-bar">
+    <h2 id="repTitle"></h2>
+    <div class="adm-actions">
+      <button class="btn btn-dark" id="dlOne">Download this report (CSV)</button>
+      <button class="btn btn-line" id="dlAll">Download all reports</button>
+      <button class="btn btn-line" id="print">Print</button>
+      <button class="btn btn-line" id="reload">Refresh</button>
+    </div>
+  </div>
+  <p class="adm-desc" id="repDesc"></p>
+  <div class="tbl-wrap"><table class="tbl" id="tbl"></table></div>
+  <p class="adm-foot" id="admFoot"></p>
+</main>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/bcal-data.js"></script>
+<script src="assets/js/admin.js"></script>
+</body>
+</html>

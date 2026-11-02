@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>House Rules &amp; Disclaimer — Panchanan Villa</title>
+<meta name="description" content="House rules and disclaimer for bookings at Panchanan Villa — no beef, no pork, photo ID, noise limits and cancellation policy.">
+<link rel="canonical" href="https://pvila.in/rules.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="page-top"><div class="wrap">
+  <a href="index.html" class="logo"><span class="logo-mark">ॐ</span><span class="logo-text"><span>Panchanan<b>.</b></span><small>VILLA</small></span></a>
+  <a class="btn btn-white" href="index.html#book">Book Your Stay</a>
+</div></div>
+
+<section class="rules rules-page">
+  <div class="wrap">
+    <div class="sec-head light">
+      <h2>House Rules &amp; Disclaimer</h2>
+      <p>These rules form part of every booking contract.</p>
+    </div>
+    <ol class="rule-grid" id="ruleGrid"></ol>
+    <div class="rules-cta">
+      <a class="btn btn-white" href="index.html#book">I Agree — Book Now</a>
+      <a class="btn btn-line" style="border-color:#fff;color:#fff" href="index.html">Back to Home</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer" style="padding-top:0">
+  <div class="copy" style="margin-top:0">© <span id="yr"></span> Panchanan Villa · pvila.in · <a href="tel:+919831635374">+91 98316 35374</a></div>
+</footer>
+
+<div class="social" id="social"></div>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/common.js"></script>
+<script>
+  (function () {
+    const { C, esc } = window.PV;
+    document.getElementById("ruleGrid").innerHTML = C.rules.map((r, i) =>
+      `<li class="${i < 2 ? "hl" : ""}"><b>${esc(r[0])}</b><span>${esc(r[1])}</span></li>`).join("");
+  })();
+</script>
+</body>
+</html>

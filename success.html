@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Booking Acknowledgement — Panchanan Villa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="page-top"><div class="wrap">
+  <a href="index.html" class="logo"><span class="logo-mark">ॐ</span><span class="logo-text"><span>Panchanan<b>.</b></span><small>VILLA</small></span></a>
+  <a class="btn btn-white" href="index.html">Back to Home</a>
+</div></div>
+
+<main class="ack">
+  <div class="ack-card" id="ack">
+    <div class="ack-status pend">Loading your booking…</div>
+  </div>
+</main>
+
+<div class="social" id="social"></div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/common.js"></script>
+<script>
+(async function () {
+  const { C, DEMO, inr, esc, fmtDate, spaceById, apiGet, ackText, waLink } = window.PV;
+  const box = document.getElementById("ack");
+  const q = new URLSearchParams(location.search);
+  let id = q.get("id"), t = q.get("t");
+  if (!id) { try { const l = JSON.parse(localStorage.getItem("pv_last") || "{}"); id = l.id; t = l.t; } catch (e) {} }
+  if (!id) { box.innerHTML = `<div class="ack-status fail">No booking reference found.</div><div class="ack-body"><a class="btn btn-dark" href="index.html#book">Make a booking</a></div>`; return; }
+
+  let r;
+  try { r = await apiGet({ action: "status", id, t }); } catch (e) { r = { ok: false, error: "Network error" }; }
+  if (!r.ok) { box.innerHTML = `<div class="ack-status fail">${esc(r.error || "Booking not found")}</div><div class="ack-body">Booking ID: <b>${esc(id)}</b>. Please WhatsApp us at ${esc(C.phoneDisplay)} with this ID.</div>`; return; }
+
+  const b = r.booking;
+  const paid = b.status === "PAID";
+  const stCls = paid ? "ok" : b.status === "PENDING" ? "pend" : "fail";
+  const stTxt = paid ? "✓ Booking CONFIRMED — payment received. A copy has been emailed to you and to Panchanan Villa."
+              : b.status === "PENDING" ? "Payment pending — if money was debited, it will be confirmed shortly. Please do not pay again."
+              : "Payment " + b.status.toLowerCase() + ". Your dates are not reserved. Please try again or WhatsApp us.";
+  const spaces = b.spaces.map(s => (spaceById(s) || { name: s }).name).join("<br>");
+  const row = (k, v) => `<tr><th>${k}</th><td>${v}</td></tr>`;
+  const msg = ackText(b);
+
+  box.innerHTML = `
+    <div class="ack-head"><h1>Booking Acknowledgement</h1><span class="bid">${esc(b.id)}</span></div>
+    <div class="ack-status ${stCls}">${stTxt}</div>
+    <div class="ack-body">
+      <table class="ack-table">
+        ${row("Guest name", esc(b.name))}
+        ${row("Mobile / WhatsApp", "+91 " + esc(b.phone))}
+        ${row("Email", esc(b.email))}
+        ${row("Spaces booked", spaces)}
+        ${row("Check-in", fmtDate(b.checkIn) + ", " + C.checkIn)}
+        ${row("Check-out", fmtDate(b.checkOut) + ", " + C.checkOut)}
+        ${row("Days · Guests", b.days + " day(s) · " + esc(b.guests) + " guests")}
+        ${row("Purpose", esc(b.purpose))}
+        ${row("Photo ID to carry", esc(b.idType) + " (all adult guests)")}
+        ${row("Total tariff", "<b>" + inr(b.total) + "</b> (" + inr(b.total / Math.max(1, b.days)) + " / day × " + b.days + ")")}
+        ${row("Paid online", paid ? inr(b.payNow) + (b.payMode ? " · " + esc(b.payMode) : "") : "₹0")}
+        ${row("PayU reference", esc(b.payuId || "—") + (b.txnid ? " · Txn " + esc(b.txnid) : ""))}
+        ${row("Balance at check-in", inr(paid ? b.balance : b.total))}
+        ${row("Security deposit", inr(C.securityDeposit) + " refundable, at check-in")}
+        ${b.notes ? row("Special requests", esc(b.notes)) : ""}
+      </table>
+      <h3 style="margin-top:22px;font-size:18px">House rules (agreed)</h3>
+      <ol class="ack-rules">${C.rules.map(r => `<li><b>${esc(r[0])}</b> — ${esc(r[1])}</li>`).join("")}</ol>
+    </div>
+    <div class="ack-actions">
+      <a class="btn btn-wa" target="_blank" rel="noopener" href="${waLink("91" + b.phone, msg)}">Send to my WhatsApp</a>
+      <a class="btn btn-dark" target="_blank" rel="noopener" href="${waLink(C.whatsapp, msg)}">Send copy to Panchanan Villa</a>
+      <a class="btn btn-line" href="mailto:${encodeURIComponent(b.email)}?cc=${encodeURIComponent(C.email)}&subject=${encodeURIComponent("Panchanan Villa booking " + b.id)}&body=${encodeURIComponent(msg.replace(/\*/g, ""))}">Email a copy</a>
+      <button class="btn btn-line" onclick="window.print()">Print / Save PDF</button>
+    </div>
+    <div class="ack-foot">Generated ${new Date().toLocaleString("en-IN")} · ${esc(C.domain)} · ${esc(C.phoneDisplay)}${DEMO ? " · DEMO MODE" : ""}</div>`;
+})();
+</script>
+</body>
+</html>

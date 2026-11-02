@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panchanan Villa — Book Floors & Rooftop | pvila.in</title>
+<meta name="description" content="Book Panchanan Villa — Ground Floor lounge, two private suites and an open rooftop terrace, or the entire villa, for stays, pujas and celebrations.">
+<link rel="canonical" href="https://pvila.in/">
+<meta property="og:title" content="Panchanan Villa">
+<meta property="og:description" content="Three elegant floors and a rooftop terrace — book online.">
+<meta property="og:image" content="https://pvila.in/assets/img/villa-front.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%235b1a16'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='%23d4af37' font-family='serif'%3EP%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@300;400;500;600&family=Noto+Sans+Bengali:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ============ ENTRY DISCLAIMER ============ -->
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+  <div class="gate-box">
+    <div class="gate-head">
+      <span class="om">ॐ</span>
+      <h2 id="gateTitle">Before You Enter</h2>
+      <p>Panchanan Villa is a family home. Every booking is accepted on the following house rules.</p>
+    </div>
+    <ol class="gate-rules" id="gateRules"></ol>
+    <label class="check"><input type="checkbox" id="gateAgree"> <span>I have read and agree to abide by the house rules.</span></label>
+    <div class="gate-actions">
+      <button class="btn btn-dark" id="gateBtn" disabled>I Agree &amp; Continue</button>
+      <a class="btn btn-line" href="https://www.google.com">Leave</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" id="top">
+  <a href="#top" class="logo" aria-label="Panchanan Villa home">
+    <span class="logo-mark">ॐ</span>
+    <span class="logo-text"><span>Panchanan<b>.</b></span><small>VILLA</small></span>
+  </a>
+  <button class="menu-btn" id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span> <em>Menu</em></button>
+  <nav class="nav" id="nav">
+    <a href="#tariff">Spaces &amp; Tariff</a>
+    <a href="#calendar">Calendar</a>
+    <a href="rules.html">House Rules</a>
+    <a href="#book">Booking</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <div class="head-right">
+    <a class="head-phone" href="tel:+919831635374">☏ +91 98316 35374</a>
+    <a class="btn btn-white" href="#book">Book Your Stay</a>
+  </div>
+</header>
+
+<!-- ============ HERO SLIDER (short) ============ -->
+<section class="hero" aria-label="Villa photographs">
+  <div class="slide is-active" style="background-image:url('assets/img/villa-angle.jpg')"></div>
+  <div class="slide" style="background-image:url('assets/img/villa-floors.jpg')"></div>
+  <div class="slide slide-pan" style="background-image:url('assets/img/villa-front.jpg')"></div>
+  <div class="hero-shade"></div>
+  <div class="hero-text">
+    <h1>Welcome To<br>Panchanan Villa</h1>
+    <p>Three graceful floors and an open-sky rooftop — for stays, pujas &amp; celebrations</p>
+  </div>
+  <div class="dots" id="dots"></div>
+</section>
+
+
+<!-- ============ SPACES & TARIFF ============ -->
+<section class="tariff" id="tariff">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Spaces &amp; Tariff</h2>
+    </div>
+    <div class="cards" id="spaceCards"></div>
+      </div>
+</section>
+
+<!-- ============ BENGALI CALENDAR & AVAILABILITY ============ -->
+<section class="cal-sec" id="calendar">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Availability Calendar</h2>
+      <p>বাংলা পঞ্জিকা সহ · Bengali dates, wedding days (বিয়ের তারিখ) and floor-wise availability at a glance. Tap a date to start your booking.</p>
+    </div>
+    <div class="cal" id="cal">
+      <div class="cal-top">
+        <button class="cal-nav" id="calPrev" aria-label="Previous month">‹</button>
+        <div class="cal-title"><strong id="calEn"></strong><span id="calBn"></span></div>
+        <button class="cal-nav" id="calNext" aria-label="Next month">›</button>
+      </div>
+      <div class="cal-jump">
+        <select id="calMonth" aria-label="Month"></select>
+        <select id="calYear" aria-label="Year"></select>
+        <label class="cal-wonly"><input type="checkbox" id="calWed"> Wedding dates only</label>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-legend" id="calLegend"></div>
+      <p class="cal-note" id="calNote"></p>
+    </div>
+    <div class="cal-wedlist" id="calWedList"></div>
+  </div>
+</section>
+
+<!-- ============ BOOKING ============ -->
+<section class="booking wrap" id="book">
+  <div class="sec-head">
+    <h2>Book Panchanan Villa</h2>
+    <p>Fill in your details, choose your spaces and pay securely with PayU. Your acknowledgement is sent by email and WhatsApp.</p>
+  </div>
+
+  <div class="book-grid">
+    <form id="bookForm" class="book-form" novalidate>
+      <fieldset>
+        <legend>1 · Dates</legend>
+        <div class="row2">
+          <label>Check-in<input type="date" id="fIn" required></label>
+          <label>Check-out<input type="date" id="fOut" required></label>
+        </div>
+        <p class="avail" id="availMsg"></p>
+      </fieldset>
+
+      <fieldset>
+        <legend>2 · Choose spaces</legend>
+        <div class="pick" id="spacePick"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>3 · Your details</legend>
+        <div class="row2">
+          <label>Full name<input type="text" id="fName" required maxlength="60" autocomplete="name"></label>
+          <label>Mobile (WhatsApp)<input type="tel" id="fPhone" required pattern="[6-9][0-9]{9}" maxlength="10" placeholder="10-digit number" autocomplete="tel-national"></label>
+        </div>
+        <div class="row2">
+          <label>Email<input type="email" id="fEmail" required autocomplete="email"></label>
+          <label>No. of guests<input type="number" id="fGuests" min="1" max="150" value="10" required></label>
+        </div>
+        <div class="row2">
+          <label>Purpose of booking
+            <select id="fPurpose">
+              <option>Family stay</option><option>Wedding / Reception</option><option>Annaprashan / Upanayan</option>
+              <option>Puja / Religious function</option><option>Birthday / Anniversary</option><option>Corporate / Meeting</option><option>Other</option>
+            </select>
+          </label>
+          <label>Photo ID type
+            <select id="fIdType"><option>Aadhaar</option><option>Voter ID</option><option>Passport</option><option>Driving Licence</option><option>PAN</option></select>
+          </label>
+        </div>
+        <label>Address<textarea id="fAddr" rows="2" maxlength="200"></textarea></label>
+        <label>Special requests<textarea id="fNote" rows="2" maxlength="300" placeholder="Décor, caterer, arrival time…"></textarea></label>
+      </fieldset>
+
+      <label class="check"><input type="checkbox" id="fAgree" required>
+        <span>I agree to the <a href="rules.html" target="_blank">house rules</a> — including <b>no beef and no pork</b> on the premises — and the cancellation policy.</span></label>
+
+      <p class="form-err" id="formErr" role="alert"></p>
+    </form>
+
+    <aside class="summary" id="summary">
+      <h3>Booking Summary</h3>
+      <dl id="sumList"></dl>
+      <div class="sum-total"><span>Payable now</span><strong id="sumPay">₹0</strong></div>
+      <p class="sum-note" id="sumNote"></p>
+      <button class="btn btn-dark btn-block" id="payBtn" type="button">Pay Securely with PayU</button>
+      <p class="secure">🔒 UPI · Cards · Net Banking · Wallets via PayU</p>
+      <p class="demo-flag" id="demoFlag" hidden>Demo mode — backend not connected; payment is simulated.</p>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="gallery">
+  <img src="assets/img/villa-angle.jpg" alt="Villa exterior, angled view" loading="lazy">
+  <img src="assets/img/villa-lobby.jpg" alt="Ground floor lounge" loading="lazy">
+  <img src="assets/img/villa-floors.jpg" alt="Upper floors" loading="lazy">
+  <img src="assets/img/villa-roof.jpg" alt="Rooftop terrace" loading="lazy">
+</section>
+
+<!-- ============ CONTACT / FOOTER ============ -->
+<footer class="footer" id="contact">
+  <div class="wrap foot-grid">
+    <div>
+      <a href="#top" class="logo logo-dark"><span class="logo-mark">ॐ</span><span class="logo-text"><span>Panchanan<b>.</b></span><small>VILLA</small></span></a>
+      <p>Three floors and a rooftop terrace, available by the day for stays and celebrations.</p>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <p><a href="tel:+919831635374">+91 98316 35374</a><br>
+         <a class="js-wa" href="#">WhatsApp us</a><br>
+         <a class="js-mail" href="#"></a></p>
+    </div>
+    <div>
+      <h4>Timings</h4>
+      <p>Check-in 12:00 PM<br>Check-out 11:00 AM<br>Enquiries 9 AM – 9 PM</p>
+    </div>
+    <div>
+      <h4>Quick links</h4>
+      <p><a href="admin.html">Owner / Admin</a><br><a href="#tariff">Tariff</a><br><a href="#calendar">Calendar</a><br><a href="rules.html">House rules</a><br><a href="#book">Book now</a></p>
+    </div>
+  </div>
+  <div class="copy">© <span id="yr"></span> Panchanan Villa · pvila.in</div>
+</footer>
+
+<div class="social" id="social"></div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/bcal-data.js"></script>
+<script src="assets/js/calendar.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
