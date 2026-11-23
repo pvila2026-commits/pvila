@@ -42,7 +42,7 @@
   const b = r.booking;
   const paid = b.status === "PAID";
   const stCls = paid ? "ok" : b.status === "PENDING" ? "pend" : "fail";
-  const stTxt = paid ? "✓ Booking CONFIRMED — payment received. A copy has been emailed to you and to Panchanan Villa."
+  const stTxt = paid ? "✓ Booking CONFIRMED — payment received. A copy has been emailed to you and to Pvilla."
               : b.status === "PENDING" ? "Payment pending — if money was debited, it will be confirmed shortly. Please do not pay again."
               : "Payment " + b.status.toLowerCase() + ". Your dates are not reserved. Please try again or WhatsApp us.";
   const spaces = b.spaces.map(s => (spaceById(s) || { name: s }).name).join("<br>");
@@ -50,7 +50,7 @@
   const msg = ackText(b);
 
   box.innerHTML = `
-    <div class="ack-head"><h1>Booking Acknowledgement</h1><span class="bid">${esc(b.id)}</span></div>
+    <div class="ack-head"><div><div class="ack-brand">${esc(C.ackBrand)}</div><h1>Booking Acknowledgement</h1></div><span class="bid">${esc(b.id)}</span></div>
     <div class="ack-status ${stCls}">${stTxt}</div>
     <div class="ack-body">
       <table class="ack-table">
@@ -75,11 +75,11 @@
     </div>
     <div class="ack-actions">
       <a class="btn btn-wa" target="_blank" rel="noopener" href="${waLink("91" + b.phone, msg)}">Send to my WhatsApp</a>
-      <a class="btn btn-dark" target="_blank" rel="noopener" href="${waLink(C.whatsapp, msg)}">Send copy to Panchanan Villa</a>
+      <a class="btn btn-dark" target="_blank" rel="noopener" href="${waLink(C.whatsapp, msg)}">Send copy to Pvilla</a>
       <a class="btn btn-line" href="mailto:${encodeURIComponent(b.email)}?cc=${encodeURIComponent(C.email)}&subject=${encodeURIComponent("Panchanan Villa booking " + b.id)}&body=${encodeURIComponent(msg.replace(/\*/g, ""))}">Email a copy</a>
       <button class="btn btn-line" onclick="window.print()">Print / Save PDF</button>
     </div>
-    <div class="ack-foot">Generated ${new Date().toLocaleString("en-IN")} · ${esc(C.domain)} · ${esc(C.phoneDisplay)}${DEMO ? " · DEMO MODE" : ""}</div>`;
+    <div class="ack-foot">${esc(C.ackBrand)} · Generated ${new Date().toLocaleString("en-IN")} · ${esc(C.domain)} · ${esc(C.phoneDisplay)}${DEMO ? " · DEMO MODE" : ""}</div>`;
 })();
 </script>
 </body>

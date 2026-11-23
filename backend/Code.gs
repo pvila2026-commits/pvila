@@ -8,15 +8,16 @@
  *
  * Script Properties (Project Settings → Script properties):
  *   PAYU_KEY, PAYU_SALT, PAYU_MODE (test|live), ADMIN_KEY, OWNER_EMAIL,
- *   SITE_URL (https://pvila.in), OWNER_WA (919831635374)
+ *   SITE_URL (https://pvila.in), OWNER_WA (917980561425)
  *   Optional WhatsApp Cloud API: WA_TOKEN, WA_PHONE_ID, WA_TEMPLATE, WA_LANG (en)
  */
 
 /* ---- Tariff: keep in sync with assets/js/config.js (server is authoritative) ---- */
-var PRICES = { GF: 15000, F1: 18000, F2: 18000, RT: 12000, ALL: 55000 };
+var PRICES = { GF: 18000, F1: 18000, F2: 18000, RT: 12000, ALL: 55000 };
 var NAMES  = { GF: 'Ground Floor — Grand Lounge', F1: 'First Floor — Garden Suite', F2: 'Second Floor — Sky Suite', RT: 'Rooftop Terrace', ALL: 'Entire Villa — 3 Floors + Rooftop' };
 var CAPACITY = { GF: 60, F1: 12, F2: 12, RT: 80, ALL: 150 };
-var ADVANCE_PERCENT = 100, SECURITY_DEPOSIT = 10000;
+var MIN_BOOKING = 5000, SECURITY_DEPOSIT = 10000;
+var ACK_BRAND = 'Pvilla (A venture of Green Indane Pvt. Ltd.)';
 var PENDING_HOLD_MIN = 20;   // unpaid bookings hold the dates for this many minutes
 
 var SHEET = 'Bookings';
@@ -72,7 +73,7 @@ function create_(b) {
 
   var perDay = ids.reduce(function (t, s) { return t + PRICES[s]; }, 0);
   var subtotal = perDay * days, total = subtotal;
-  var payNow = Math.round(total * ADVANCE_PERCENT / 100);
+  var payNow = b.payOption === 'full' ? total : Math.min(MIN_BOOKING, total);   // minimum booking amount, balance at check-in
 
   var lock = LockService.getScriptLock(); lock.waitLock(20000);
   try {
@@ -180,7 +181,7 @@ function d_(iso) { return Utilities.formatDate(new Date(iso + 'T00:00:00+05:30')
 function ackHtml_(r) {
   var row = function (k, v) { return '<tr><td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;color:#555;width:40%">' + k + '</td><td style="padding:8px 10px;border-bottom:1px solid #e5e7eb">' + v + '</td></tr>'; };
   return '<div style="font-family:Arial,sans-serif;max-width:640px;margin:auto;border:1px solid #16181d">' +
-    '<div style="background:#5b1a16;color:#fff;padding:20px 24px"><div style="font-size:12px;letter-spacing:3px">ॐ PANCHANAN VILLA</div>' +
+    '<div style="background:#5b1a16;color:#fff;padding:20px 24px"><div style="font-size:13px;letter-spacing:1px">ॐ ' + ACK_BRAND + '</div>' +
     '<div style="font-size:22px;font-family:Georgia,serif;margin-top:4px">Booking Acknowledgement — ' + r.id + '</div></div>' +
     '<div style="background:#e9f7ef;color:#16613a;padding:12px 24px;font-weight:bold">Booking CONFIRMED — payment received</div>' +
     '<table style="width:100%;border-collapse:collapse;font-size:14px;margin:10px 0">' +
@@ -196,14 +197,14 @@ function ackHtml_(r) {
     'No drugs or gambling · Alcohol only with permission · No smoking indoors · No firecrackers · Damages adjusted from deposit.<br>' +
     '<b>Cancellation:</b> 7+ days 80% refund · 3–7 days 50% · under 72 h no refund.</div>' +
     '<div style="padding:0 24px 22px"><a href="' + ackLink_(r) + '" style="background:#16181d;color:#fff;padding:12px 20px;text-decoration:none;display:inline-block">View / Print Acknowledgement</a> ' +
-    '<a href="https://wa.me/' + P('OWNER_WA', '919831635374') + '" style="background:#25d366;color:#fff;padding:12px 20px;text-decoration:none;display:inline-block">WhatsApp us</a></div>' +
-    '<div style="border-top:1px solid #e5e7eb;padding:12px 24px;font-size:12px;color:#888">pvila.in · +91 98316 35374</div></div>';
+    '<a href="https://wa.me/' + P('OWNER_WA', '917980561425') + '" style="background:#25d366;color:#fff;padding:12px 20px;text-decoration:none;display:inline-block">WhatsApp us</a></div>' +
+    '<div style="border-top:1px solid #e5e7eb;padding:12px 24px;font-size:12px;color:#888">' + ACK_BRAND + ' · pvila.in · +91 79805 61425</div></div>';
 }
 
 function sendEmails_(r) {
   var owner = P('OWNER_EMAIL');
-  MailApp.sendEmail({ to: r.email, subject: 'Booking Confirmed — Panchanan Villa (' + r.id + ')', htmlBody: ackHtml_(r),
-                      name: 'Panchanan Villa', replyTo: owner || undefined });
+  MailApp.sendEmail({ to: r.email, subject: 'Booking Confirmed — Pvilla (' + r.id + ')', htmlBody: ackHtml_(r),
+                      name: 'Pvilla', replyTo: owner || undefined });
   if (owner) MailApp.sendEmail({ to: owner, subject: '[NEW BOOKING] ' + r.id + ' · ' + r.name + ' · ' + d_(r.checkIn) + ' · ' + inr_(r.payNow),
                                  htmlBody: ackHtml_(r) + '<p style="font-family:Arial">Address: ' + esc_(r.address) + '</p>', name: 'pvila.in bookings', replyTo: r.email });
 }
@@ -214,7 +215,7 @@ function sendWhatsApp_(r) {
   var token = P('WA_TOKEN'), phoneId = P('WA_PHONE_ID'), tpl = P('WA_TEMPLATE');
   if (!token || !phoneId || !tpl) return false;
   var vars = [r.name, r.id, d_(r.checkIn) + ' to ' + d_(r.checkOut), inr_(r.payNow), ackLink_(r)];
-  [ '91' + r.phone, P('OWNER_WA', '919831635374') ].forEach(function (to) {
+  [ '91' + r.phone, P('OWNER_WA', '917980561425') ].forEach(function (to) {
     UrlFetchApp.fetch('https://graph.facebook.com/v21.0/' + phoneId + '/messages', {
       method: 'post', contentType: 'application/json', headers: { Authorization: 'Bearer ' + token }, muteHttpExceptions: true,
       payload: JSON.stringify({ messaging_product: 'whatsapp', to: to, type: 'template', template: { name: tpl, language: { code: P('WA_LANG', 'en') },
@@ -230,7 +231,7 @@ function returnPage_(r, msg) {
   var html = '<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><base target="_top"></head>' +
     '<body style="font-family:Arial,sans-serif;text-align:center;padding:60px 20px;background:#f4f5f7">' +
     '<div style="max-width:460px;margin:auto;background:#fff;border:1px solid #16181d;padding:30px">' +
-    '<div style="color:#5b1a16;letter-spacing:3px;font-size:12px">ॐ PANCHANAN VILLA</div>' +
+    '<div style="color:#5b1a16;letter-spacing:1px;font-size:13px">ॐ ' + ACK_BRAND + '</div>' +
     '<h2 style="font-family:Georgia,serif">' + (ok ? 'Payment successful' : (msg ? 'Notice' : 'Payment not completed')) + '</h2>' +
     '<p>' + (msg || (r ? 'Booking ' + r.id + ' — status: <b>' + r.status + '</b>' : '')) + '</p>' +
     '<a href="' + url + '" target="_top" style="display:inline-block;background:#16181d;color:#fff;padding:14px 22px;text-decoration:none;margin-top:10px">View Acknowledgement</a>' +

@@ -14,15 +14,16 @@
   const daysBetween = (a, b) => Math.round((new Date(b + "T00:00:00") - new Date(a + "T00:00:00")) / 864e5);
 
   /* Price calculation — mirrored in backend/Code.gs (server is the source of truth) */
-  function quote(spaceIds, checkIn, checkOut) {
+  function quote(spaceIds, checkIn, checkOut, payOption) {
     let ids = spaceIds.slice();
     if (ids.includes("ALL") || C.spaces.every(s => ids.includes(s.id))) ids = ["ALL"];
     const days = Math.max(1, daysBetween(checkIn, checkOut) || 0);
     const perDay = ids.reduce((t, id) => t + (spaceById(id) ? spaceById(id).price : 0), 0);
     const subtotal = perDay * days;
     const total = subtotal;
-    const payNow = Math.round(total * C.advancePercent / 100);
-    return { ids, days, perDay, subtotal, total, payNow, balance: total - payNow };
+    const minPay = Math.min(C.minBooking, total);
+    const payNow = payOption === "full" ? total : minPay;
+    return { ids, days, perDay, subtotal, total, minPay, payNow, balance: total - payNow };
   }
 
   /* --------- API (Google Apps Script) with demo fallback --------- */
@@ -74,7 +75,7 @@
   function demoPost(body) {
     if (body.action !== "create") return Promise.resolve({ ok: false, error: "Unknown action" });
     const b = body.booking, list = demoAll();
-    const q = quote(b.spaces, b.checkIn, b.checkOut);
+    const q = quote(b.spaces, b.checkIn, b.checkOut, b.payOption);
     if (clash(list, q.ids, b.checkIn, b.checkOut)) return Promise.resolve({ ok: false, error: "Sorry — one or more selected spaces are already booked for these dates." });
     const d = new Date();
     const id = "PV-" + d.toISOString().slice(2, 10).replace(/-/g, "") + "-" + Math.floor(1000 + Math.random() * 9000);
@@ -105,7 +106,8 @@
   function ackText(b) {
     const names = b.spaces.map(id => (spaceById(id) || { short: id }).short).join(", ");
     return [
-      "*PANCHANAN VILLA — Booking Acknowledgement*",
+      "*" + C.ackBrand + "*",
+      "*Booking Acknowledgement*",
       "Booking ID: *" + b.id + "*",
       "Status: " + (b.status === "PAID" ? "CONFIRMED (Payment received)" : b.status),
       "",

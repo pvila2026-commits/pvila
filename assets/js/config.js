@@ -5,8 +5,8 @@
 window.PVILA = {
   siteName: "Panchanan Villa",
   domain: "https://pvila.in",
-  whatsapp: "919831635374",          // country code + number, no "+"
-  phoneDisplay: "+91 98316 35374",
+  whatsapp: "917980561425",          // country code + number, no "+"
+  phoneDisplay: "+91 79805 61425",
   email: "bookings@pvila.in",        // shown on site; set OWNER_EMAIL in backend too
   address: "Panchanan Villa, West Bengal, India",
 
@@ -16,7 +16,7 @@ window.PVILA = {
 
   /* Google Apps Script Web App URL (see README → Step 2).
      Leave empty to run the site in DEMO mode (bookings saved in browser only). */
-  apiUrl: "https://script.google.com/macros/s/AKfycbwTHSH_18_VMyPqO7sXmgAlU-p1e4lCMEvsG_YbbtJjg4cSe4so5Vj4MHQCK7ld-b3xZw/exec",
+  apiUrl: "",
 
   /* PayU: "test" uses https://test.payu.in, "live" uses https://secure.payu.in
      Merchant KEY and SALT are stored ONLY in the backend (never here). */
@@ -24,11 +24,12 @@ window.PVILA = {
 
   /* ---------- TARIFF (₹ per day, 12 noon → 11 am next day) ---------- */
   securityDeposit: 10000,            // refundable, collected at check-in (not online)
-  advancePercent: 100,               // % of total collected online (e.g. 30 for advance only)
+  minBooking: 5000,                  // minimum booking amount paid online; balance at check-in
+  ackBrand: "Pvilla (A venture of Green Indane Pvt. Ltd.)",
 
   spaces: [
     { id: "GF",  name: "Ground Floor — Grand Lounge", short: "Ground Floor",
-      price: 15000, guests: 60, img: "assets/img/villa-lobby.jpg",
+      price: 18000, guests: 60, img: "assets/img/villa-lobby.jpg",
       desc: "Double-height glass frontage, marble flooring and carved teak seating. Ideal for receptions, pujas and get-togethers." },
     { id: "F1",  name: "First Floor — Garden Suite", short: "First Floor",
       price: 18000, guests: 12, img: "assets/img/villa-terrace.jpg",

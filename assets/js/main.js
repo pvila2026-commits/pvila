@@ -99,7 +99,8 @@
     });
     const ids = selected(), ci = $("fIn").value, co = $("fOut").value;
     const okDates = ci && co && daysBetween(ci, co) >= 1;
-    const q = quote(ids, ci, co);
+    const opt = (document.querySelector('input[name="payOpt"]:checked') || {}).value || "min";
+    const q = quote(ids, ci, co, opt);
     const rows = [
       ["Check-in", okDates ? window.PV.fmtDate(ci) + ", " + C.checkIn : "—"],
       ["Check-out", okDates ? window.PV.fmtDate(co) + ", " + C.checkOut : "—"],
@@ -108,11 +109,13 @@
       ["Tariff / day", inr(q.perDay)],
       ["Total", inr(q.total)]
     ];
-    if (C.advancePercent < 100) rows.push(["Balance at check-in", inr(q.balance)]);
+    rows.push(["Pay now", inr(q.payNow)], ["Balance at check-in", inr(q.balance)]);
+    const has = ids.length && okDates;
+    $("optMin").textContent = (has ? inr(q.minPay) : inr(C.minBooking)) + " now · balance at check-in";
+    $("optFull").textContent = (has ? inr(q.total) : "Full tariff") + " now · nothing due at check-in";
     $("sumList").innerHTML = rows.map(r => `<div><dt>${r[0]}</dt><dd>${r[1]}</dd></div>`).join("");
     $("sumPay").textContent = inr(ids.length && okDates ? q.payNow : 0);
-    $("sumNote").textContent = `Refundable security deposit of ${inr(C.securityDeposit)} is collected at check-in.` +
-      (C.advancePercent < 100 ? ` ${C.advancePercent}% advance is paid online now.` : "");
+    $("sumNote").textContent = `Minimum booking amount ${inr(C.minBooking)}. Refundable security deposit of ${inr(C.securityDeposit)} is collected at check-in.`;
   }
 
   let availT;
@@ -156,7 +159,8 @@
     const booking = {
       name: v.name, phone: v.ph, email: v.em, guests: v.g, checkIn: v.ci, checkOut: v.co,
       spaces: quote(selected(), v.ci, v.co).ids, purpose: $("fPurpose").value, idType: $("fIdType").value,
-      address: $("fAddr").value.trim(), notes: $("fNote").value.trim(), rulesAccepted: true
+      address: $("fAddr").value.trim(), notes: $("fNote").value.trim(), rulesAccepted: true,
+      payOption: (document.querySelector('input[name="payOpt"]:checked') || {}).value || "min"
     };
     try {
       const r = await apiPost({ action: "create", booking });
@@ -175,5 +179,6 @@
     }
   });
 
+  document.querySelectorAll('input[name="payOpt"]').forEach(r => r.addEventListener("change", refresh));
   refresh(); checkAvail();
 })();

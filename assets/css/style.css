@@ -481,3 +481,12 @@ body{overflow-x:clip}
 @media (max-width:1080px){.kpis6{grid-template-columns:repeat(3,1fr)}}
 @media (max-width:560px){.kpis6{grid-template-columns:repeat(2,1fr)}.adm-badge{display:none}}
 @media print{.adm-filters,.adm-tabs,.adm-actions,.page-top{display:none !important}.tbl-wrap{max-height:none;overflow:visible}.tbl{white-space:normal;font-size:11px}}
+
+/* ===================== v4: payment option + ack brand ===================== */
+.payopt{display:grid;gap:8px;margin:14px 0 4px}
+.payopt label{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);padding:10px 12px;cursor:pointer;font-size:14px}
+.payopt label:has(input:checked){border-color:var(--maroon);background:#fbf3f2}
+.payopt input{accent-color:var(--maroon);width:17px;height:17px;margin-top:2px;flex:none}
+.payopt span{display:flex;flex-direction:column;font-weight:500}
+.payopt small{font-weight:400;color:var(--ink-2);font-size:12.5px}
+.ack-brand{font-size:13px;letter-spacing:.06em;color:var(--gold-2);margin-bottom:4px}

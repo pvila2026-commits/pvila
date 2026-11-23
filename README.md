@@ -49,7 +49,7 @@ DNS can take up to 24 hours.
 | `ADMIN_KEY` | a long password for admin.html |
 | `OWNER_EMAIL` | email that should receive every booking |
 | `SITE_URL` | `https://pvila.in` |
-| `OWNER_WA` | `919831635374` |
+| `OWNER_WA` | `917980561425` |
 
    **PayU Key & Salt:** instead of typing them, use the separate **PAYU-SETUP.gs** file you received (not part of this repo): add it as a second script file, run `setupSecrets`, then delete that file. Run `checkSetup` to confirm — it shows MISSING for anything not yet set.
 4. In the editor, choose function **setupTriggers** → **Run** → approve permissions. (Creates the *Bookings* tab and a 10-minute payment reconciliation job.)
@@ -87,7 +87,7 @@ DNS can take up to 24 hours.
 
 Edit `assets/js/config.js` (website) **and** the `PRICES` / `CAPACITY` lines at the top of `backend/Code.gs` (the server recalculates every amount, so a changed browser price can't be paid).
 
-Tariff currently set: Ground Floor ₹15,000 · First Floor ₹18,000 · Second Floor ₹18,000 · Rooftop ₹12,000 · Entire villa ₹55,000 per day (no GST added), ₹10,000 refundable deposit at check-in.
+Tariff currently set: Ground Floor ₹18,000 · First Floor ₹18,000 · Second Floor ₹18,000 · Rooftop ₹12,000 · Entire villa ₹55,000 per day (no GST added). Minimum booking amount ₹5,000 paid online (guest may pay in full); balance and ₹10,000 refundable deposit at check-in. Change `minBooking` in config.js and `MIN_BOOKING` in Code.gs together.
 
 ## Bengali availability calendar
 
